@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App.jsx';
 import reportWebVitals from './reportWebVitals';
-
+import { theme } from "./assets/style/theme";
 import createStore from './reducks/store/store';
 import { Provider } from "react-redux";
-
 import { ConnectedRouter } from "connected-react-router";
 import * as History from "history";
+import { MuiThemeProvider } from "@material-ui/core"
 
 
 
@@ -18,7 +18,9 @@ export const store = createStore(history);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

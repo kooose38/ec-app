@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from "react-router";
 import {
-   ProductList, Signup, Signin, Auth, Reset, ProductEdit
+   ProductList, Signup, Signin, Auth, Reset, ProductEdit, productDetail, ProductDetail
 } from "./templetes/index"
 
 const Router = () => {
@@ -14,7 +14,9 @@ const Router = () => {
 
          {/* <Auth> */}
          <Route exact path={"(/)?"} component={ProductList} />
+         <Route exact path={"/detail/:id"} component={ProductDetail} />
          <Route path={"/edit(/:id)?"} component={ProductEdit} />
+
          {/* </Auth> */}
       </Switch>
    );

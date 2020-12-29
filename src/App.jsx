@@ -3,12 +3,16 @@ import Router from "./Router";
 import "./assets/style/style.css";
 import "./assets/style/reset.css";
 import "./assets/style/theme.js";
+import { Header } from "./components/headers";
 
 const App = () => {
   return (
-    <main>
-      <Router />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Router />
+      </main>
+    </>
   );
 }
 
