@@ -35,11 +35,18 @@ const Header = () => {
    const [open, setOpen] = useState(false);
 
    const handleToggle = useCallback((e) => {
-      if (e.type === "keydown" && (e.key === "tab" || e.key === "shift")) {
+      if (e.type === "keydown" && (e.key === "Tab" || e.key === "shift")) {
          return;
       }
-      setOpen(!open);
+      if (!open) {
+         setOpen(true);
+      } else {
+         setOpen(false);
+      }
+
    });
+
+
    return (
       <div className={classes.root}>
          <AppBar position="fixed" className={classes.menuBar}>

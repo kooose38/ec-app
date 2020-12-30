@@ -36,6 +36,7 @@ const ImageSwiper = ({ images }) => {
                </div>
 
             )}
+
       </Swiper>
    )
 };

@@ -7,7 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 const HeaderMenus = (props) => {
    return (
       <>
-         <IconButton>
+         <IconButton >
             <Badge badgeContent={3} color="secondary">
                <ShoppingCartIcon />
             </Badge>

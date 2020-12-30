@@ -1,6 +1,7 @@
 import { signInAction, signOutAction } from "./actions";
 import { push } from "connected-react-router";
 import { auth, FirebaseTimestamp, db } from "../../firebase/index";
+import initialState from "../store/initialState";
 
 export const signin = (email, password) => {
    return async (dispatch) => {
@@ -10,7 +11,7 @@ export const signin = (email, password) => {
       }
       return await auth.signInWithEmailAndPassword(email, password).then(async (result) => {
          const user = result.user;
-
+         //成功したら
          if (user) {
             const uid = user.uid;
 
@@ -66,7 +67,7 @@ export const signup = (name, email, password, confirm) => {
             await db.collection("users").doc(uid).set(userInitialData).then(() => {
                dispatch(signInAction({
                   uid: uid,
-                  username: name,
+                  username: initialState.username,
                   role: userInitialData.role,
                }));
                dispatch(push("/"))

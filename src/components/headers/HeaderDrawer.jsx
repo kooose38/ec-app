@@ -35,11 +35,12 @@ const useStyles = makeStyles((theme) => ({
 const HeaderDrawer = (props) => {
    const dispatch = useDispatch();
 
-   const classes = useStyles("");
+   const classes = useStyles();
+
    const [key, setKey] = useState()
    const inputKey = useCallback((e) => {
       setKey(e.target.value)
-   }, []);
+   }, [setKey]);
 
    const selectMenu = (e, path) => {
       dispatch(push(path))
@@ -61,34 +62,36 @@ const HeaderDrawer = (props) => {
             className={classes.drawerPaper}
             ModalProps={{ keepMounted: true }}
          >
-            <div className={classes.searchField}>
-               <Textinput
-                  fullWidth={false} label={"検索"} multiline={false} required={false}
-                  rows={1} value={key} type={"text"} onChange={inputKey}
-               />
-               <IconButton>
-                  <SearchIcon />
-               </IconButton>
+            <div onClose={(e) => props.onClose(e)} onKeyDown={(e) => props.onClose(e)}>
+               <div className={classes.searchField} >
+                  <Textinput
+                     fullWidth={false} label={"検索"} multiline={false} required={false}
+                     rows={1} value={key} type={"text"} onChange={inputKey}
+                  />
+                  <IconButton>
+                     <SearchIcon />
+                  </IconButton>
+               </div>
+               <Divider />
+               <List>
+                  {
+                     menus.map(menu =>
+                        <ListItem key={menu.id} button onClick={(e) => menu.fn(e, menu.value)}>
+                           <ListItemIcon>
+                              {menu.icon}
+                           </ListItemIcon>
+                           <ListItemText primary={menu.label} />
+                        </ListItem>
+                     )
+                  }
+                  <ListItem button key="logout" onClick={() => dispatch(signout())}>
+                     <ListItemIcon>
+                        <ExitToApp />
+                     </ListItemIcon>
+                     <ListItemText primary={"Logout"}></ListItemText>
+                  </ListItem>
+               </List>
             </div>
-            <Divider />
-            <List>
-               {
-                  menus.map(menu =>
-                     <ListItem key={menu.id} button onClick={(e) => menu.fn(e, menu.value)}>
-                        <ListItemIcon>
-                           {menu.icon}
-                        </ListItemIcon>
-                        <ListItemText primary={menu.label} />
-                     </ListItem>
-                  )
-               }
-               <ListItem button key="logout" onClick={() => dispatch(signout())}>
-                  <ListItemIcon>
-                     <ExitToApp />
-                  </ListItemIcon>
-                  <ListItemText primary={"Logout"}></ListItemText>
-               </ListItem>
-            </List>
          </Drawer>
       </nav>
    )
