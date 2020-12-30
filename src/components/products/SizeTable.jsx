@@ -16,7 +16,7 @@ const useStyles = makeStyles({
    }
 })
 
-const SizeTable = ({ sizes }) => {
+const SizeTable = ({ sizes, addProduct }) => {
    const classes = useStyles()
    return (
       <TableContainer>
@@ -33,7 +33,7 @@ const SizeTable = ({ sizes }) => {
                            </TableCell>
                         <TableCell className={classes.iconCell}>
                            {size.quantity > 0 ? (
-                              <IconButton>
+                              <IconButton onClick={() => addProduct(size.size)}>
                                  <ShoppingCartIcon />
                               </IconButton>
                            ) : (

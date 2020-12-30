@@ -1,4 +1,4 @@
-import { signInAction, signOutAction } from "./actions";
+import { signInAction, signOutAction, addStoreCartDataAction, fetchOrderHistoryAction } from "./actions";
 import { push } from "connected-react-router";
 import { auth, FirebaseTimestamp, db } from "../../firebase/index";
 import initialState from "../store/initialState";
@@ -104,3 +104,29 @@ export const reset = (email) => {
    }
 }
 
+export const addProductCart = async (cartData) => {
+   return async (dispatch, getState) => {
+      const uid = getState().users.uid;
+      const ref = await db.collection("users").doc(uid).collection("cart").doc();
+      const cartId = ref.id;
+      cartData.cartId = cartId;
+
+      await db.collection("users").doc(uid).collection("cart").doc(cartId).set(cartData).then(() => {
+         dispatch(push("/"))
+      }).catch(err => {
+         alert(err.message);
+      })
+   }
+}
+
+export const addStoreCartData = async (cartData) => {
+   return async (dispatch) => {
+      dispatch(addStoreCartDataAction({ cartData: cartData }))
+   }
+}
+
+export const fetchOrderHistory = (orderData) => {
+   return async (dispatch) => {
+      dispatch(fetchOrderHistoryAction({ orderData: orderData }))
+   }
+}

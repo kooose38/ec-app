@@ -1,12 +1,12 @@
-import { initialProps } from "./initialProps";
 
-
-const initialState: initialProps = {
+const initialState = {
    users: {
       isSignIn: false,
       username: "",
       uid: "",
-      role: ""
+      role: "",
+      cart: [],
+      order: [],
    },
    products: {
       list: [],

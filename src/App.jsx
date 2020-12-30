@@ -9,7 +9,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main>
+      <main style={{ marginTop: 100 }}>
         <Router />
       </main>
     </>

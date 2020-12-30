@@ -16,3 +16,13 @@ export const getIsSignIn = createSelector(
    [usersSelector],
    state => state.isSignIn
 );
+
+export const getCart = createSelector(
+   [usersSelector],
+   state => state.cart
+);
+
+export const getOrder = createSelector(
+   [usersSelector],
+   state => state.order
+);

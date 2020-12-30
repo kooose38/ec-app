@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { addProductCart } from "../reducks/users/operations";
+import { useDispatch } from "react-redux";
 import { ImageSwiper, SizeTable } from "../components/products/index";
 import { makeStyles } from "@material-ui/styles";
 import { HTMLReactParser } from "html-react-parser";
-import { db } from '../firebase';
+import { db, FirebaseTimestamp } from '../firebase';
+import { push } from 'connected-react-router';
 
 const useStyles = makeStyles((theme) => ({
    slideBox: {
@@ -38,8 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductDetail = () => {
+   const dispatch = useDispatch()
    const classes = useStyles()
    const id = window.location.pathname.split("/detail/")[1]
+   if (id === "") {
+      dispatch(push("/"))
+   }
    const [product, setProduct] = useState(null);
 
    useEffect(async () => {
@@ -48,6 +55,24 @@ const ProductDetail = () => {
          setProduct(data);
       })
    }, []);
+
+   const addProduct = useCallback(async (selectedSize) => {
+      const timestamp = FirebaseTimestamp.now();
+
+      const CartData = {
+         created_at: timestamp,
+         name: product.name,
+         gender: product.gender,
+         images: product.images,
+         description: product.description,
+         price: product.price,
+         productId: product.id,
+         quantity: 1,
+         size: selectedSize,
+      }
+
+      dispatch(await addProductCart(CartData));
+   }, [product]);
 
    return (
       <section className="c-section-wrapin">
@@ -60,7 +85,7 @@ const ProductDetail = () => {
                   <h2 className="u-text__headline">{product.name}</h2>
                   <p className={classes.price}>{product.price.toLocaleString()}</p>
                   <div className="module-spacer--small"></div>
-                  <SizeTable sizes={product.sizes} />
+                  <SizeTable addProduct={addProduct} sizes={product.sizes} />
                   <div className="module-spacer--small"></div>
                   <h3>{product.description}</h3>
                </div>
