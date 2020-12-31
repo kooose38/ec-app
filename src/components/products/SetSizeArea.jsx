@@ -46,7 +46,7 @@ const SetSizeArea = ({ sizes, setSizes }) => {
       if (index === sizes.length) {
          const newSizes = {
             size: size,
-            quantity: quantity,
+            quantity: parseInt(quantity, 10),
          }
          setSizes(prevState => [...prevState, newSizes])
          setIndex(index + 1)
@@ -68,8 +68,11 @@ const SetSizeArea = ({ sizes, setSizes }) => {
    };
 
    const deleteSize = (i) => {
-      const newSizes = sizes.filter((size, index) => index !== i);
-      setSizes(newSizes);
+      // const newSizes = sizes.filter((size, index) => index !== i);
+      const index = sizes.findIndex((size, index) => index === i);
+      sizes.splice(index, 1);
+
+      setSizes([...sizes]);
       setIndex(sizes.length - 1);
    };
 
@@ -82,7 +85,7 @@ const SetSizeArea = ({ sizes, setSizes }) => {
 
    return (
       <div>
-         <pre>{JSON.stringify({ size, quantity, index }, null, 4)}</pre>
+         {/* <pre>{JSON.stringify({ size, quantity, index }, null, 4)}</pre> */}
          <TableContainer component={Paper}>
             <Table>
                <TableHead>
@@ -96,7 +99,7 @@ const SetSizeArea = ({ sizes, setSizes }) => {
                <TableBody>
                   {sizes.length !== 0 && (
                      sizes.map((size, index) =>
-                        <TableRow key={size.size}>
+                        <TableRow key={index.toString()}>
                            <TableCell>{size.size}</TableCell>
                            <TableCell>{size.quantity}</TableCell>
                            <TableCell>

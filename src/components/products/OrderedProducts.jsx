@@ -30,11 +30,17 @@ const OrderedProducts = ({ product }) => {
       dispatch(push(`/detail/${id}`))
    }, []);
 
+   const returnImage = (images) => {
+      if (Array.isArray(images)) {
+         return images[0].path;
+      }
+   };
+
    return (
       <>
          <ListItem className={classes.list}>
             <ListItemAvatar>
-               <img className={classes.image} src={product.images[0].path} alt={product.name} />
+               <img className={classes.image} src={returnImage(product.images)} alt={product.name} />
             </ListItemAvatar>
             <div className={classes.text}>
                <ListItemText

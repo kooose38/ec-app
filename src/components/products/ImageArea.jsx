@@ -20,10 +20,11 @@ const ImageArea = ({ images, setImages }) => {
       if (!window.confirm("削除しますか？")) {
          return;
       }
-      const index = images.findIndex(image => image.id === id);
-      const newImage = images.splice(index, 1)
+      const updateImages = images;
+      const index = updateImages.findIndex(image => image.id === id);
+      updateImages.splice(index, 1);
 
-      setImages([...newImage]);
+      setImages([...updateImages]);
       await storage.ref("images").child(id).delete();
    }, [images]);
 
