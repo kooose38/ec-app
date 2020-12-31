@@ -2,7 +2,7 @@ import { signInAction, signOutAction, addStoreCartDataAction, fetchOrderHistoryA
 import { push } from "connected-react-router";
 import { auth, FirebaseTimestamp, db } from "../../firebase/index";
 import initialState from "../store/initialState";
-
+//event発火
 export const signin = (email, password) => {
    return async (dispatch) => {
       if (email === "" || password === "") {
@@ -37,7 +37,7 @@ export const signin = (email, password) => {
       })
    };
 };
-
+//event発火
 export const signup = (name, email, password, confirm) => {
    return async (dispatch) => {
       if (name === "" || email === "" || password === "" || confirm === "") {
@@ -79,7 +79,7 @@ export const signup = (name, email, password, confirm) => {
       })
    }
 }
-
+//event発火
 export const signout = () => {
    return async (dispatch) => {
       await auth.signOut().then(() => {
@@ -88,7 +88,7 @@ export const signout = () => {
       });
    }
 };
-
+//event発火
 export const reset = (email) => {
    return async (dispatch) => {
       if (email === "") {
@@ -103,7 +103,7 @@ export const reset = (email) => {
       })
    }
 }
-
+//event発火 カートに入れる
 export const addProductCart = async (cartData) => {
    return async (dispatch, getState) => {
       const uid = getState().users.uid;
@@ -118,13 +118,13 @@ export const addProductCart = async (cartData) => {
       })
    }
 }
-
+//useEffect
 export const addStoreCartData = async (cartData) => {
    return async (dispatch) => {
       dispatch(addStoreCartDataAction({ cartData: cartData }))
    }
 }
-
+//useEffect
 export const fetchOrderHistory = (orderData) => {
    return async (dispatch) => {
       dispatch(fetchOrderHistoryAction({ orderData: orderData }))

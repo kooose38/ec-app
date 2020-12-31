@@ -53,7 +53,7 @@ const Header = () => {
             <Toolbar className={classes.toolBar} >
                {/* <img alt="logo images" style={{ width: 128 }} /> */}
                <h3 style={{ fontWeight: "bold" }} onClick={() => dispatch(push("/"))}>EC APP</h3>
-               {!isSignIn && (
+               {isSignIn && (
                   <div className={classes.iconButton}>
                      <HeaderMenus onClick={handleToggle} />
                   </div>

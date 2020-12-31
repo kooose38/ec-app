@@ -15,14 +15,20 @@ const ProductList = () => {
    const products = getProducts(state)    //[]
    const uid = getUserId(state)
 
+   const query = window.location.pathname;
+   //data().id を取得
+   const gender = ((/^\/\?gender=/).test(query) ? query.split("/?gender=")[1] : "");
+   const category = ((/^\/\?category=/).test(query) ? query.split("/?category=")[1] : "");
+   // queryに合わせてstate値は常時変わる
    useEffect(async () => {
-      dispatch(await homeGetProductFetch())
-   }, [products]);
+      dispatch(await homeGetProductFetch(gender, category))
+   }, [query]);
 
    //store.cart の更新 componentWillmount
-   useEffect(async () => {
+   useEffect(() => {
+      //空の配列
       const stateCart = getCart(state);
-      const unsubscribe = await db.collection("users").doc(uid).collection("cart").onSnapshot(snapShots => {
+      const unsubscribe = async () => await db.collection("users").doc(uid).collection("cart").onSnapshot(snapShots => {
          snapShots.docChanges().forEach(change => {
             const cartData = change.doc.data();
             const changeType = change.type;
@@ -48,15 +54,10 @@ const ProductList = () => {
       return () => unsubscribe()
    }, [])
 
-   const testing = [
-      { images: [{ path: testImg, name: "画像" }], name: "スポサン", id: "123546", price: 3200 },
-      { images: [{ path: testImg, name: "画像" }], name: "スポサン", id: "123546", price: 3200 },
-      { images: [{ path: testImg, name: "画像" }], name: "スポサン", id: "123546", price: 3200 },
-   ];
    return (
       <section className="c-section-wrapin">
          <div className="p-grid__row">
-            {/* {
+            {
                products.length === 0 ? (
                   <h2>商品がありません</h2>
                ) : (
@@ -65,16 +66,6 @@ const ProductList = () => {
                      )
                   )
             }
-            testing */}
-            {
-               testing.length > 0 && (
-                  testing.map(product =>
-                     <ProductCard key={product.id} product={product} />
-
-                  )
-               )
-            }
-
          </div>
       </section>
    )

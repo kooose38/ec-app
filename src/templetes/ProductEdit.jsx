@@ -3,6 +3,7 @@ import { Textinput, SelectBox, Primarybutton } from '../components/UIkit';
 import { useDispatch } from "react-redux";
 import { getFetchProducts, saveProducts, updatedProducts } from "../reducks/products/operations";
 import { ImageArea, SetSizeArea } from '../components/products';
+import { db } from '../firebase';
 
 
 const ProductEdit = () => {
@@ -27,7 +28,9 @@ const ProductEdit = () => {
       [name, setName] = useState(""),
       [descriptopn, setDescriptopn] = useState(""),
       [category, setCategory] = useState(""),
+      [categories, setCategories] = useState([]),
       [gender, setGender] = useState(""),
+      [genders, setGenders] = useState([]),
       [images, setImages] = useState([]),
       [sizes, setSizes] = useState([]),
       [price, setPrice] = useState("");
@@ -49,17 +52,34 @@ const ProductEdit = () => {
       setGender(e.target.value)
    }, [setGender]);
 
-
-   const categories = [
-      { id: "tops", name: "トップス" },
-      { id: "sandal", name: "スポサン" },
-      { id: "pants", name: "パンツ" },
-   ];
-
-   const genders = [
-      { id: "male", name: "男性" },
-      { id: "female", name: "女性" },
-   ];
+   useEffect(() => {
+      (async () => {
+         const prev = [];
+         await db.collection("categories").orderBy("order", "asc").get().then(snapshots => {
+            snapshots.forEach(doc => {
+               const data = doc.data();
+               prev.push({
+                  ...data  //query検索のためidとnameは同じ値にする
+               });
+            })
+            setCategories(prev);
+         }).catch(err => {
+            alert(err.message);
+         });
+         async () => {
+            const prevs = [];
+            await db.collection("genders").orderBy("order", "asc").get().then(snapshots => {
+               snapshots.forEach(doc => {
+                  const data = doc.data();
+                  prevs.push({
+                     ...data
+                  })
+               })
+               setGenders(prevs);
+            })
+         }
+      })();
+   }, [])
 
    return (
       <section>

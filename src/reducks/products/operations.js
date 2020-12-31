@@ -1,7 +1,7 @@
 import { push } from "connected-react-router";
 import { db, FirebaseTimestamp } from "../../firebase"
 import { fetchProductAction, deleteProductsAction } from "./actions";
-//new create 
+//event発火 
 export const saveProducts = async (name, descriptopn, category, gender, price, images, sizes) => {
    return async (dispatch) => {
       if (name === "" || descriptopn === "" || category === "" || gender === "" || price === "") {
@@ -37,7 +37,7 @@ export const saveProducts = async (name, descriptopn, category, gender, price, i
       })
    }
 };
-//get product information
+//useEffect
 export const getFetchProducts = async (
    productId, setName, setDescriptopn, setCategory, setGender, setImages, setPrice, setSizes
 ) => {
@@ -61,7 +61,7 @@ export const getFetchProducts = async (
       })
    }
 };
-//updated 
+//event発火
 export const updatedProducts = async (id, name, descriptopn, category, gender, price, images, sizes) => {
    return async (dispatch) => {
       if (name === "" || descriptopn === "" || category === "" || gender === "" || price === "") {
@@ -90,11 +90,20 @@ export const updatedProducts = async (id, name, descriptopn, category, gender, p
       })
    }
 };
-
-export const homeGetProductFetch = async () => {
+//useEffect   queryを受け取る
+export const homeGetProductFetch = async (gender, category) => {
    return async (dispatch) => {
       const prev = [];
-      await db.collection("products").orderBy("updated_at", "desc").get().then(snapshots => {
+      let query = await db.collection("products").orderBy("updated_at", "desc");
+
+      if (gender !== "") {
+         query.where("gender", "==", gender);
+      }
+      if (category !== "") {
+         query.where("category", "==", category);
+      }
+
+      query.get().then(snapshots => {
          snapshots.forEach(snapshot => {
             const data = snapshot.data();
             prev.push(data);
@@ -102,8 +111,8 @@ export const homeGetProductFetch = async () => {
          dispatch(fetchProductAction(prev));
       })
    }
-}
-
+};
+//event発火
 export const deleteProduct = async (id) => {
    return async (dispatch, getState) => {
       await db.collection("products").doc(id).delete().then(() => {
@@ -149,6 +158,7 @@ export const orderProducts = async (carts, amount) => {
             }
 
          })
+         //カートにあった商品情報
          products.push({
             id: cart.productId,
             images: cart.images,
@@ -189,7 +199,7 @@ export const orderProducts = async (carts, amount) => {
                updated_at: timestamp,
                products: products,  //[]
                amount: amount,
-               shippin_date: shippingDate,
+               shipping_date: shippingDate,
             };
 
             await db.collection("users").doc(uid).collection("order").doc(orderId).set(history).then(() => {

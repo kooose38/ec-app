@@ -18,5 +18,8 @@ service cloud.firestore {
       allow read;
       allow write;
     }
+    match/categories/{categoryiesId}{
+        allow read,write :if request.auth.uid == userId;
+    }
   }
 }
