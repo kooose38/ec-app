@@ -16,9 +16,7 @@ export const ProductReducer = (state = initialState.products, action) => {
             list: [...action.payload]
          }
       default:
-         return {
-            ...state
-         }
-
+         return 
+            state
    }
 };
