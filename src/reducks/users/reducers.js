@@ -25,9 +25,9 @@ export const UserReducer = (state = initialState.users, action) => {
             ...state,
             order: [...action.payload]
          }
-      default:
-         return {
-            ...state
-         }
+      default: //スプレッドを使うと違う情報になるので注意！！
+         return 
+            state
+         
    }
 };
