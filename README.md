@@ -2,7 +2,7 @@
 react-redux/firebase
 
 
-# reducresファイルへのdefaultデータ（初期値）は、スプレッドを使わない。
+## reducresファイルへのdefaultデータ（初期値）は、スプレッドを使わない。
 *ex)* 
 *const a = { name:"Hello" };*  
 *const b = { ...a };*  
